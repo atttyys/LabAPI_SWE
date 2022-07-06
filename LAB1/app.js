@@ -6,8 +6,8 @@ app.use(bodyParser.json());
 const users = [
     {
         "id": 1,
-        "name": "John Doe",
-        "email": "John.doe@gmail.com"
+        "name": "Mr Chollathit Saensaradee",
+        "email": "Chollathit.s@ku.th"
     },
     {
         "id": 2,
@@ -23,8 +23,20 @@ const users = [
 app.get('/', (req, res) => res.send('hello world!'))
 
 app.get('/api/users', (req, res) => {
-    const result = {"status": 200,"data": users}
+    const result = { "status": 200, "data": users }
     return res.json(result)
+})
+
+app.get("/api/users/:id", (req, res) => {
+    let user = users.find(user => user.id === parseInt(req.params.id));
+    if (!user)
+        return res.status(400).json({ status: 400, massage: "Not found user with the given ID" });
+    res.user = user;
+    const result = {
+        status: 200,
+        data: res.user
+    };
+    return res.json(result);
 })
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'))
